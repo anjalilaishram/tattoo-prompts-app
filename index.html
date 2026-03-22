@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Photo to Tattoo Art — AI Prompt Guide</title>
+
+<!-- PWA Meta Tags -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0e0e0e">
+
+<!-- iOS / iPad App Meta Tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tattoo Prompts">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface2: #232323;
+    --border: #2e2e2e;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --accent: #e2c044;
+    --accent-dim: #e2c04422;
+    --red: #e25555;
+    --green: #5ec269;
+    --blue: #5b9bd5;
+    --purple: #a78bfa;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    padding: 3rem 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #151515 0%, var(--bg) 100%);
+  }
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .header h1 span { color: var(--accent); }
+  .header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 1rem 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    padding: 0.65rem 1.4rem;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── Tab Content ── */
+  .tab-content { display: none; padding: 2rem 1.5rem 4rem; max-width: 900px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* ── Section Headings ── */
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    color: var(--accent);
+  }
+
+  /* ── Prompt Builder Prompt Box ── */
+  .prompt-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    position: relative;
+    margin: 1.5rem 0;
+  }
+  .prompt-box pre {
+    white-space: pre-wrap;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #ccc;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 14px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.2s;
+  }
+  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn.copied { background: var(--green); }
+
+  /* ── Conversation Example ── */
+  .convo { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 8px; }
+  .convo .msg {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    max-width: 85%;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .convo .ai {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+  }
+  .convo .ai::before {
+    content: 'AI';
+    display: inline-block;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .convo .user {
+    background: #1e293b;
+    border: 1px solid #2d3a4d;
+    align-self: flex-end;
+  }
+  .convo .user::before {
+    content: 'YOU';
+    display: inline-block;
+    background: #5b9bd522;
+    color: var(--blue);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── Glossary ── */
+  .glossary-group {
+    margin-bottom: 2rem;
+  }
+  .glossary-group h3 {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .kw-row {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #1f1f1f;
+    align-items: baseline;
+  }
+  .kw-row:last-child { border-bottom: none; }
+  .kw-name {
+    flex: 0 0 180px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .kw-desc {
+    flex: 1;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── Style Cards ── */
+  .style-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.2s;
+  }
+  .style-card:hover { border-color: #444; }
+  .style-card .style-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+  }
+  .style-card .style-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+  .style-card .style-num {
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: var(--accent-dim);
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+  .style-card .style-body { display: none; }
+  .style-card.open .style-body { display: block; }
+  .style-card .toggle-icon {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+    margin-left: 0.5rem;
+  }
+  .style-card.open .toggle-icon { transform: rotate(45deg); }
+  .style-card pre, .after-card pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    padding-right: 4.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: #bbb;
+    white-space: pre-wrap;
+    margin: 0.75rem 0;
+    position: relative;
+  }
+  .pre-wrap {
+    position: relative;
+    margin: 0.75rem 0;
+  }
+  .pre-wrap pre {
+    margin: 0 !important;
+  }
+  .pre-wrap .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+  }
+  .best-for {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+  .best-for strong { color: var(--green); }
+
+  /* ── After Generate Section ── */
+  .after-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .after-card h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .after-card p, .after-card li {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .after-card ul { padding-left: 1.2rem; }
+  .after-card li { margin-bottom: 0.3rem; }
+  .after-card pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #aaa;
+    white-space: pre-wrap;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Style Picker Table ── */
+  .picker-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  .picker-table th {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    background: var(--surface);
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .picker-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+  }
+  .picker-table td:first-child { font-weight: 500; }
+  .picker-table td:last-child { color: var(--text-muted); }
+
+  /* ── Tips ── */
+  .tip {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #1f1f1f;
+    align-items: baseline;
+  }
+  .tip:last-child { border-bottom: none; }
+  .tip-num {
+    flex: 0 0 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 50%;
+  }
+  .tip-text { font-size: 0.9rem; color: var(--text-muted); }
+  .tip-text strong { color: var(--text); }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .header h1 { font-size: 1.6rem; }
+    .tabs { gap: 0; overflow-x: auto; justify-content: flex-start; padding: 0.5rem; }
+    .tab-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; white-space: nowrap; }
+    .kw-row { flex-direction: column; gap: 0.2rem; }
+    .kw-name { flex: none; }
+    .convo .msg { max-width: 95%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<div class="header">
+  <h1>Photo to <span>Tattoo Art</span></h1>
+  <p>Convert any real photo into tattoo art using AI. Pick a style, grab a prompt, generate.</p>
+</div>
+
+<!-- ══════════════ TABS ══════════════ -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="builder">Prompt Builder</button>
+  <button class="tab-btn" data-tab="styles">Style Prompts</button>
+  <button class="tab-btn" data-tab="glossary">Keyword Glossary</button>
+  <button class="tab-btn" data-tab="after">After You Generate</button>
+  <button class="tab-btn" data-tab="tips">Tips & Reference</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 1 — PROMPT BUILDER
+     ══════════════════════════════════════════════════════════ -->
+<div id="builder" class="tab-content active">
+  <h2>Interactive Prompt Builder</h2>
+  <p style="color:var(--text-muted);margin-bottom:1rem;">
+    Copy this prompt and paste it into <strong style="color:var(--text)">ChatGPT, Claude, Gemini</strong>, or any AI chat.
+    The AI will ask you simple questions one at a time, then output a polished, ready-to-use tattoo prompt.
+    Your idea stays exactly as you described it — it only adds the right professional keywords.
+  </p>
+
+  <div class="prompt-box">
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre id="builder-prompt">You are a tattoo prompt builder. Your job is to help me create a perfect,
+detailed AI image generation prompt that converts my idea (or my reference
+photo) into tattoo art.
+
+Walk me through it step by step. Ask me ONE question at a time, wait for
+my answer, then move to the next. Keep it casual and simple — no jargon.
+
+Here are the steps:
+
+1. First, ask me: "Do you have a reference photo to upload, or are you
+   starting from just an idea?"
+
+   IF I UPLOAD A PHOTO:
+   - Study the photo carefully and describe back to me exactly what you
+     see: the subject, face/expression, pose, angle, key features,
+     unique details, colors, background, mood — everything that makes
+     this photo specific.
+   - DEFAULT RULE: Unless I explicitly ask to change something, ALWAYS
+     preserve EVERYTHING from the photo exactly as it is — the same
+     face, same expression, same pose, same angle, same proportions,
+     same unique features. The tattoo should be a style conversion of
+     the photo, NOT a reinterpretation.
+   - Then ask me: "I'll keep everything exactly as it is in the photo —
+     same pose, expression, all details. Do you want me to change
+     anything specific, or keep it all as is?"
+   - Only if I explicitly request changes (different pose, different
+     angle, add something, remove something, etc.) should those changes
+     be reflected. If I say "keep as is" or anything similar, preserve
+     every detail faithfully.
+   - REMEMBER what I want to keep and what I want to change for the
+     final prompt. This is critical — if someone uploads their face,
+     their pet, or a loved one, the tattoo MUST look like THAT specific
+     person/animal/thing in THAT specific pose/expression, not a
+     generic version of it.
+
+   IF NO PHOTO:
+   - Move to step 2.
+
+2. Ask me: "What do you want the tattoo to be? Describe it in your own
+   words, as simple or detailed as you like."
+   (If I already uploaded a photo and said keep as is, skip this and
+   move to step 3. If I requested changes, confirm you understood the
+   changes and move on.)
+
+3. Show me these vibe options and ask me to pick one (or combine):
+   - Clean &amp; minimal (thin lines, elegant, simple)
+   - Bold &amp; classic (thick outlines, traditional tattoo shop look)
+   - Dark &amp; moody (heavy shadows, intense, dramatic)
+   - Soft &amp; dreamy (watercolor, painterly, gentle)
+   - Realistic (looks like a photo on skin)
+   - Geometric (shapes, symmetry, patterns)
+   - Raw &amp; sketchy (rough, unfinished, hand-drawn feel)
+   - Cultural (Japanese, Polynesian, Chicano, etc.)
+
+4. Ask me: "Black &amp; grey, full color, or mostly black with a pop of one
+   color (like red or blue)?"
+
+5. Ask me: "Where on your body?" and give common options (forearm, upper
+   arm, sleeve, back, chest, ribs, thigh, calf, wrist, neck, hand).
+
+6. Ask me: "How big?" with simple options:
+   - Tiny (coin-sized)
+   - Small (wrist/ankle sized)
+   - Medium (forearm sized)
+   - Large (thigh/back section)
+   - Extra large (full sleeve or full back)
+
+7. Ask me: "Anything extra you want to add?" and suggest options like:
+   text/lettering, flowers or leaves, a border/frame, blending two things
+   together, vintage/aged look, stencil-ready for a real tattoo artist.
+   Let me say "nope" if nothing.
+
+8. After all answers are collected, generate the final prompt. Follow
+   these rules:
+   - Start with "Create a tattoo design of [subject]"
+   - If a reference photo was uploaded, the prompt MUST include:
+     "Based on the uploaded reference photo. Preserve the exact
+     likeness, pose, angle, expression, and all unique characteristics.
+     This must look like THIS specific [person/animal/subject], not a
+     generic version."
+   - Then list the specific features you observed from the photo:
+     e.g., "Maintain the [eye shape, nose, smile, hairstyle, fur
+     pattern, ear shape, markings, scar, pose, head tilt, etc.]"
+   - If it's a person's face: include "faithful portrait preserving
+     exact facial structure, eyes, nose, mouth, jawline, expression,
+     and pose from the reference — same angle, same gaze direction"
+   - If it's a pet/animal: include "preserve the exact markings, fur
+     pattern/color, ear shape, eye color, pose, and unique features
+     of this specific animal as shown in the reference"
+   - If it's an object/scene: include "maintain the exact composition,
+     proportions, angle, and distinctive details from the reference"
+   - If the user requested specific changes (different pose, add/remove
+     elements, etc.), include ONLY those changes and keep everything
+     else exactly as the photo shows
+   - Translate my vibe choice into specific professional tattoo/art
+     keywords (e.g., "clean &amp; minimal" becomes "fine line, single-needle
+     linework, minimal shading, sparse dotwork, elegant negative space")
+   - Include color/ink specification
+   - Include body placement and size
+   - Include any extras I mentioned
+   - End with "White background, tattoo design presentation"
+   - CRITICAL: Keep my original vision exactly — only ADD technical
+     detail, never change what I asked for. If a photo was provided,
+     the output must be recognizably THAT photo converted to tattoo
+     art, not a generic interpretation.
+
+9. Present the final prompt in a clean code block I can copy-paste.
+
+10. After giving me the prompt, ask: "Want me to make any tweaks, try a
+    different style, or generate a variation?"
+
+Start now. Begin with question 1.</pre>
+  </div>
+
+  <h3>Example Conversation</h3>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;">Here's how it looks in action once you paste the prompt:</p>
+
+  <div class="convo">
+    <div class="msg ai">Do you have a reference photo to upload, or are you starting from just an idea?</div>
+    <div class="msg user">Just an idea — I want my dog, a golden retriever.</div>
+    <div class="msg ai">Nice! What do you want the tattoo to look like? Describe it however you want.</div>
+    <div class="msg user">My dog's face, looking happy, tongue out.</div>
+    <div class="msg ai">Pick a vibe — clean & minimal, bold & classic, dark & moody, soft & dreamy, realistic, geometric, raw & sketchy, or cultural?</div>
+    <div class="msg user">Clean and minimal.</div>
+    <div class="msg ai">Black & grey, full color, or mostly black with a pop of one color?</div>
+    <div class="msg user">Black and grey.</div>
+    <div class="msg ai">Where on your body?</div>
+    <div class="msg user">Inner forearm.</div>
+    <div class="msg ai">How big — tiny, small, medium, large, or extra large?</div>
+    <div class="msg user">Medium.</div>
+    <div class="msg ai">Anything extra? Text, flowers, a frame, blend with something, vintage look, stencil-ready?</div>
+    <div class="msg user">Make it stencil-ready.</div>
+    <div class="msg ai">Here's your prompt:</div>
+  </div>
+
+  <div class="prompt-box" style="margin-top:0;">
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>Create a tattoo design of a golden retriever's face, happy expression
+with tongue out. Fine line single-needle style, delicate and precise
+linework, minimal shading using sparse dotwork and light crosshatching,
+elegant negative space usage. Black and grey ink only, smooth tonal
+gradients. Clean, understated, and refined — no bold outlines, no heavy
+fills. Designed for inner forearm placement, medium size (approximately
+4-5 inches). Stencil-ready with clean transferable outlines. White
+background, tattoo design presentation.</pre>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 2 — STYLE PROMPTS
+     ══════════════════════════════════════════════════════════ -->
+<div id="styles" class="tab-content">
+  <h2>15 Style Prompts</h2>
+  <p style="color:var(--text-muted);margin-bottom:1.5rem;">
+    Click any style to expand and copy the prompt. Replace <code style="color:var(--accent)">[subject]</code> and <code style="color:var(--accent)">[placement]</code> with your own.
+  </p>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">01</span>&ensp;<span class="style-name">American Traditional (Old School)</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Transform this photo of [subject] into an American traditional tattoo design.
+Bold black outlines, limited color palette (red, green, yellow, blue, black),
+flat color fills with no gradients, iconic sailor jerry aesthetic. Visible ink
+texture, slight halftone shading, banner ribbon beneath for text. Designed for
+[placement]. White background, tattoo flash sheet presentation.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Animals, roses, eagles, skulls, anchors, portraits, daggers.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">02</span>&ensp;<span class="style-name">Neo-Traditional</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Convert this photo of [subject] into a neo-traditional tattoo design. Rich
+jewel-tone color palette, bold black outlines with varying line weights,
+art nouveau influence, decorative framing elements, ornamental details.
+Smooth gradient shading within bold linework, slight illustrative quality.
+Designed for [placement]. Clean white background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Animal portraits, florals, mythological figures, ornate compositions.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">03</span>&ensp;<span class="style-name">Black & Grey Realism</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Convert this photo of [subject] into a black and grey realism tattoo design.
+Photorealistic rendering using only black ink in varying dilutions, smooth
+tonal gradients from pure black to light grey wash, no outlines, soft
+transitions, high detail in textures (skin pores, fur, fabric). Dramatic
+lighting with strong contrast. Designed for [placement]. White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Portraits, animals, landscapes, eyes, hands, religious imagery.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">04</span>&ensp;<span class="style-name">Fine Line / Single Needle</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Transform this photo of [subject] into a fine line minimalist tattoo design.
+Ultra-thin single-needle linework, delicate and precise, minimal shading
+using sparse dotwork or light crosshatching. Elegant negative space usage,
+clean geometry, understated and refined. No bold outlines, no heavy fills.
+Designed for [placement]. White background, stencil-ready.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Botanicals, small animals, constellations, minimal portraits, hands, symbols.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">05</span>&ensp;<span class="style-name">Japanese (Irezumi)</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Convert this photo of [subject] into a traditional Japanese irezumi tattoo
+design. Flowing composition that wraps around the body, bold black outlines,
+woodblock print-inspired shading (bokashi gradients), wind bars, cloud
+swirls, wave patterns as background fill. Color palette: deep reds, indigo
+blue, muted green, black, golden yellow. Designed for [placement] with
+natural body-flow composition. Off-white parchment background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Koi fish, dragons, tigers, cherry blossoms, samurai, hannya masks, snakes.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">06</span>&ensp;<span class="style-name">Dotwork / Stipple</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Transform this photo of [subject] into a dotwork tattoo design. Entire image
+rendered through varying densities of individual dots — no solid lines or
+fills. Stipple shading creating smooth gradients, geometric precision,
+mandala-inspired framing elements optional. Pure black ink on white skin.
+Sacred geometry influence, meditative detail. Designed for [placement].
+White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Geometric patterns, mandalas, animals, skulls, celestial objects, abstract forms.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">07</span>&ensp;<span class="style-name">Watercolor Tattoo</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Convert this photo of [subject] into a watercolor tattoo design. Vibrant
+splashes of color bleeding beyond minimal black linework, paint drip effects,
+color blending as if wet watercolor on paper. No hard edges on color areas,
+soft gradients, intentional splatter marks. Underlying sketch-like fine line
+structure. Designed for [placement]. White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Birds, flowers, butterflies, abstract compositions, landscapes, dreamlike scenes.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">08</span>&ensp;<span class="style-name">Geometric / Sacred Geometry</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Transform this photo of [subject] into a geometric tattoo design. Deconstruct
+the subject into clean geometric shapes — triangles, circles, hexagons,
+parallel lines. Precise symmetry, sharp edges, mathematical patterns.
+Combine organic subject with rigid geometric framing. Blackwork with
+optional dotwork shading. Designed for [placement]. White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Animals (wolves, lions, bears), mountains, eyes, trees, celestial bodies.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">09</span>&ensp;<span class="style-name">Trash Polka</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Convert this photo of [subject] into a trash polka tattoo design. Chaotic
+collage aesthetic using only black and red ink. Combine photorealistic
+elements with abstract smears, paint splashes, geometric shapes, and
+typographic fragments. Stark contrast, newspaper clipping textures,
+brushstroke overlays. Raw and aggressive composition. Designed for
+[placement]. White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Portraits, skulls, clocks, ravens, abstract concepts, dark themes.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">10</span>&ensp;<span class="style-name">Blackwork / Ornamental</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Transform this photo of [subject] into an ornamental blackwork tattoo design.
+Solid black fills, intricate patterns inspired by mehndi, mandala, and
+tribal art. Symmetrical composition, precise linework, negative space
+carved out of solid black areas. Lace-like detail, architectural precision.
+Designed for [placement]. White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Bands, sleeves, large-scale body coverage, abstract patterns, frames around subjects.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">11</span>&ensp;<span class="style-name">Sketch / Illustrative</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Convert this photo of [subject] into a sketch-style tattoo design. Look of
+a pencil or pen drawing directly on skin — visible construction lines,
+loose crosshatching, intentionally unfinished edges, raw artistic energy.
+Multiple overlapping strokes suggesting form rather than defining it.
+Black ink with optional light grey wash. Designed for [placement].
+White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Animals in motion, portraits, anatomical subjects, birds, dynamic scenes.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">12</span>&ensp;<span class="style-name">Chicano Style</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Transform this photo of [subject] into a Chicano tattoo design. Black and
+grey with fine line precision, smooth gradient shading, lowrider culture
+influence. Payasa faces, religious iconography, script lettering, rose
+details. Soft airbrush-like gradients, photorealistic but with cultural
+stylistic elements. Designed for [placement]. White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Portraits, roses, praying hands, crosses, lettering, day of the dead skulls.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">13</span>&ensp;<span class="style-name">Micro-Realism</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Convert this photo of [subject] into a micro-realism tattoo design. Extremely
+small scale with photorealistic detail, fine needle precision, subtle shading
+with smooth gradients. Designed to fit within 2-4 inches. Black and grey or
+soft muted colors. Incredible detail density at miniature scale. Designed
+for [placement]. White background, shown at actual tattoo size.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Small portraits, pet faces, tiny landscapes, miniature objects, jewelry-sized pieces.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">14</span>&ensp;<span class="style-name">Tribal / Polynesian (Maori / Samoan)</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Transform this photo of [subject] into a Polynesian tribal tattoo design.
+Abstract the subject into flowing tribal patterns — bold solid black shapes,
+interlocking curves, spearheads, ocean wave patterns, turtle shell motifs.
+Cultural symbolism integrated into body-flow design. No color, pure black.
+Designed for [placement] following natural muscle contours. White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Abstract representations of nature, identity symbols, full sleeve/leg compositions.</p>
+    </div>
+  </div>
+
+  <div class="style-card">
+    <div class="style-header" onclick="toggleCard(this)">
+      <span><span class="style-num">15</span>&ensp;<span class="style-name">Surrealist / Morphing</span></span>
+      <span class="toggle-icon">+</span>
+    </div>
+    <div class="style-body">
+      <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Convert this photo of [subject] into a surrealist tattoo design. Morph the
+subject with dreamlike impossible elements — melting forms, impossible
+geometry, double exposure effect blending two scenes, optical illusions.
+Black and grey realism technique applied to surreal concept. Smooth
+transitions between reality and fantasy. Designed for [placement].
+White background.</pre></div>
+      <p class="best-for"><strong>Best for:</strong> Portraits merging with landscapes, animals transforming, time/clock imagery, dali-esque scenes.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 3 — KEYWORD GLOSSARY
+     ══════════════════════════════════════════════════════════ -->
+<div id="glossary" class="tab-content">
+  <h2>Keyword Glossary</h2>
+  <p style="color:var(--text-muted);margin-bottom:1.5rem;">Every keyword used in the prompts, explained in plain language. Know what you're asking for.</p>
+
+  <div class="glossary-group">
+    <h3>Line & Outline</h3>
+    <div class="kw-row"><span class="kw-name">Bold outlines</span><span class="kw-desc">Thick, prominent black lines defining every edge. Reads well from distance, ages great.</span></div>
+    <div class="kw-row"><span class="kw-name">Fine line / Single needle</span><span class="kw-desc">Ultra-thin delicate lines from a single needle. Elegant but fades faster over time.</span></div>
+    <div class="kw-row"><span class="kw-name">Varying line weights</span><span class="kw-desc">Lines that change thick to thin, adding depth and visual interest.</span></div>
+    <div class="kw-row"><span class="kw-name">No outlines</span><span class="kw-desc">Image formed purely through shading — no defined edges. Used in realism styles.</span></div>
+    <div class="kw-row"><span class="kw-name">Construction lines</span><span class="kw-desc">Rough sketch guide lines left visible intentionally, giving a raw artistic feel.</span></div>
+    <div class="kw-row"><span class="kw-name">Linework</span><span class="kw-desc">General term for any line-based element — the skeleton of the design.</span></div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Shading & Texture</h3>
+    <div class="kw-row"><span class="kw-name">Smooth gradients</span><span class="kw-desc">Seamless dark-to-light transitions with no visible steps. Airbrush effect.</span></div>
+    <div class="kw-row"><span class="kw-name">Halftone shading</span><span class="kw-desc">Tiny dots in a grid pattern (like newspaper printing). Retro/pop art feel.</span></div>
+    <div class="kw-row"><span class="kw-name">Dotwork / Stipple</span><span class="kw-desc">Shading from individual hand-placed dots. Denser dots = darker areas.</span></div>
+    <div class="kw-row"><span class="kw-name">Crosshatching</span><span class="kw-desc">Overlapping parallel lines at angles. Hand-drawn, etched look.</span></div>
+    <div class="kw-row"><span class="kw-name">Bokashi gradients</span><span class="kw-desc">Japanese woodblock technique — smooth, cloud-like fading to nothing at edges.</span></div>
+    <div class="kw-row"><span class="kw-name">Flat color fills</span><span class="kw-desc">Solid color blocks with no shading inside. Clean and graphic.</span></div>
+    <div class="kw-row"><span class="kw-name">Tonal gradients</span><span class="kw-desc">Range from darkest black to lightest grey, creating 3D depth.</span></div>
+    <div class="kw-row"><span class="kw-name">Grey wash</span><span class="kw-desc">Black ink diluted with water for lighter greys. Foundation of black & grey work.</span></div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Composition & Layout</h3>
+    <div class="kw-row"><span class="kw-name">Negative space</span><span class="kw-desc">Empty/untattooed skin that becomes part of the design. Creates contrast and breathing room.</span></div>
+    <div class="kw-row"><span class="kw-name">Body-flow composition</span><span class="kw-desc">Design follows natural body curves and muscles, not flat like a sticker.</span></div>
+    <div class="kw-row"><span class="kw-name">Symmetrical</span><span class="kw-desc">Mirrored or balanced on both sides of a central axis.</span></div>
+    <div class="kw-row"><span class="kw-name">Wraps around</span><span class="kw-desc">Design curves around a limb or torso, not just flat on one surface.</span></div>
+    <div class="kw-row"><span class="kw-name">Flash sheet</span><span class="kw-desc">Pre-drawn designs on a sheet displayed in tattoo shops. Classic presentation format.</span></div>
+    <div class="kw-row"><span class="kw-name">Background filler</span><span class="kw-desc">Elements filling empty space — clouds, waves, smoke, geometric patterns.</span></div>
+    <div class="kw-row"><span class="kw-name">Wind bars</span><span class="kw-desc">Short parallel curved lines in Japanese tattoos representing wind or movement.</span></div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Color & Ink</h3>
+    <div class="kw-row"><span class="kw-name">Black and grey</span><span class="kw-desc">Only black ink in various dilutions. No color. Classic, timeless.</span></div>
+    <div class="kw-row"><span class="kw-name">Limited palette</span><span class="kw-desc">Only 3-5 specific colors (traditional: red, green, yellow, blue, black).</span></div>
+    <div class="kw-row"><span class="kw-name">Jewel-tone colors</span><span class="kw-desc">Rich, saturated — emerald, ruby, sapphire, amethyst. Deep and vibrant.</span></div>
+    <div class="kw-row"><span class="kw-name">Blackwork</span><span class="kw-desc">Only solid black ink. Bold fills, patterns. No grey, no color.</span></div>
+    <div class="kw-row"><span class="kw-name">Muted colors</span><span class="kw-desc">Desaturated, soft tones. Faded or vintage look rather than bright.</span></div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Style-Specific</h3>
+    <div class="kw-row"><span class="kw-name">Sailor Jerry</span><span class="kw-desc">Iconic American traditional by Norman Collins — bold, clean, nautical themes.</span></div>
+    <div class="kw-row"><span class="kw-name">Art nouveau</span><span class="kw-desc">1890s-1910s decorative movement — flowing organic lines, floral frames, elegant curves.</span></div>
+    <div class="kw-row"><span class="kw-name">Irezumi</span><span class="kw-desc">Traditional Japanese tattooing — full-body designs, dragons, koi, warriors.</span></div>
+    <div class="kw-row"><span class="kw-name">Sacred geometry</span><span class="kw-desc">Patterns from mathematical ratios in nature — flower of life, golden ratio spirals.</span></div>
+    <div class="kw-row"><span class="kw-name">Mehndi</span><span class="kw-desc">South Asian henna body art — intricate, flowing, paisley and floral patterns.</span></div>
+    <div class="kw-row"><span class="kw-name">Mandala</span><span class="kw-desc">Circular symmetrical design radiating from center. Represents wholeness.</span></div>
+    <div class="kw-row"><span class="kw-name">Trash polka</span><span class="kw-desc">Photorealism + abstract paint smears, text, collage. Only black and red ink.</span></div>
+    <div class="kw-row"><span class="kw-name">Chicano</span><span class="kw-desc">Mexican-American culture — fine line black & grey, religious imagery, script.</span></div>
+    <div class="kw-row"><span class="kw-name">Payasa</span><span class="kw-desc">Female clown face in Chicano culture — duality of happiness and sadness.</span></div>
+    <div class="kw-row"><span class="kw-name">Double exposure</span><span class="kw-desc">Two images blended together, creating surreal merged compositions.</span></div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Technical / Output</h3>
+    <div class="kw-row"><span class="kw-name">Stencil-ready</span><span class="kw-desc">Clean enough for direct thermal transfer to skin. No messy edges.</span></div>
+    <div class="kw-row"><span class="kw-name">White background</span><span class="kw-desc">Clean canvas for easy extraction and use.</span></div>
+    <div class="kw-row"><span class="kw-name">Tattoo-safe colors</span><span class="kw-desc">Colors that work as real ink — avoids neon or fast-fading colors.</span></div>
+    <div class="kw-row"><span class="kw-name">300 DPI</span><span class="kw-desc">Print resolution standard. Sharp, crisp output at intended size.</span></div>
+    <div class="kw-row"><span class="kw-name">4K</span><span class="kw-desc">~4000px wide. Preserves fine linework details.</span></div>
+    <div class="kw-row"><span class="kw-name">Inpainting</span><span class="kw-desc">AI technique — mask part of image and regenerate just that area.</span></div>
+    <div class="kw-row"><span class="kw-name">Upscale</span><span class="kw-desc">Increase resolution while preserving or enhancing detail.</span></div>
+  </div>
+
+  <div class="glossary-group">
+    <h3>Body Placement</h3>
+    <div class="kw-row"><span class="kw-name">Sleeve</span><span class="kw-desc">Covers entire arm (full) or half. Requires connected, flowing designs.</span></div>
+    <div class="kw-row"><span class="kw-name">Back piece</span><span class="kw-desc">Covers most/all of back. Maximum detail and grand compositions.</span></div>
+    <div class="kw-row"><span class="kw-name">Forearm</span><span class="kw-desc">Inner or outer forearm — popular for medium designs. Highly visible.</span></div>
+    <div class="kw-row"><span class="kw-name">Ribcage</span><span class="kw-desc">Side of torso along ribs. Elongated, vertical designs work best.</span></div>
+    <div class="kw-row"><span class="kw-name">Placement</span><span class="kw-desc">Where on the body — fundamentally affects shape, size, and composition.</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 4 — AFTER YOU GENERATE
+     ══════════════════════════════════════════════════════════ -->
+<div id="after" class="tab-content">
+  <h2>After You Generate — What to Do Next</h2>
+  <p style="color:var(--text-muted);margin-bottom:1.5rem;">You've got your tattoo design. Here's everything you can do with it.</p>
+
+  <div class="after-card">
+    <h4>Refine the Design</h4>
+    <ul>
+      <li><strong>Iterate:</strong> Re-run with tweaks — "same style but more contrast" or "simplify the background"</li>
+      <li><strong>Combine elements:</strong> Use inpainting to merge the best parts of multiple generations</li>
+      <li><strong>Adjust sizing:</strong> Specify "design fits within a 4x6 inch rectangle"</li>
+      <li><strong>Remove background:</strong> Use background removal tools to isolate the design</li>
+    </ul>
+  </div>
+
+  <div class="after-card">
+    <h4>Create a Stencil for Your Tattoo Artist</h4>
+    <p>Add this to your prompt to get a transfer-ready version:</p>
+    <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Thermal tattoo stencil version, purple/blue transfer lines on white, no shading, outlines only.</pre></div>
+  </div>
+
+  <div class="after-card">
+    <h4>Apply to a Body Mockup</h4>
+    <p>See how it looks on skin:</p>
+    <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Place this tattoo design on a realistic photo of a [skin tone] human [placement], showing how it wraps around the body naturally. Photorealistic skin texture, tattoo looks healed and settled into skin.</pre></div>
+  </div>
+
+  <div class="after-card">
+    <h4>Generate Variations</h4>
+    <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Generate 4 variations of this tattoo design: (1) simplified minimal version, (2) extended version with background filler, (3) mirrored/symmetrical version, (4) aged/vintage flash sheet version.</pre></div>
+  </div>
+
+  <div class="after-card">
+    <h4>Build a Flash Sheet</h4>
+    <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Arrange these tattoo designs on a single vintage tattoo flash sheet. Cream/aged paper background, hand-numbered designs, classic tattoo shop presentation, slight paper texture, bold colors, organized grid layout.</pre></div>
+  </div>
+
+  <div class="after-card">
+    <h4>Animate for Social Media</h4>
+    <ul>
+      <li>Use <strong>Kaiber, Runway, or Pika</strong> to animate with subtle motion (ink flowing, elements breathing)</li>
+      <li>Create a <strong>time-lapse reveal</strong> of the design appearing stroke by stroke</li>
+    </ul>
+  </div>
+
+  <div class="after-card">
+    <h4>Turn Into Products</h4>
+    <ul>
+      <li><strong>Temporary tattoos</strong> — Upload to StickerYou or Inkbox</li>
+      <li><strong>Art prints / posters</strong> — Upscale with Topaz or Magnific AI, print on fine art paper</li>
+      <li><strong>Merchandise</strong> — T-shirts, phone cases, stickers via Printful or Redbubble</li>
+      <li><strong>NFT / digital art</strong> — Mint on OpenSea or Foundation</li>
+      <li><strong>Embroidery patterns</strong> — Convert linework into embroidery-ready vectors</li>
+    </ul>
+  </div>
+
+  <div class="after-card">
+    <h4>Upscale for Print Quality</h4>
+    <div class="pre-wrap"><button class="copy-btn" onclick="copyPrompt(this)">Copy</button><pre>Upscale this tattoo design to ultra high resolution, 4K, maintaining sharp linework and smooth gradients. No artifacts, print-ready quality at 300 DPI.</pre></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 5 — TIPS & REFERENCE
+     ══════════════════════════════════════════════════════════ -->
+<div id="tips" class="tab-content">
+  <h2>Tips for Better Results</h2>
+  <div style="margin-bottom:2rem;">
+    <div class="tip"><span class="tip-num">1</span><span class="tip-text"><strong>High-quality source photo</strong> — Better input = better output. Use well-lit, clear photos.</span></div>
+    <div class="tip"><span class="tip-num">2</span><span class="tip-text"><strong>Specify ink color constraints</strong> — Real tattoos have ink limitations. "Tattoo-safe colors" helps.</span></div>
+    <div class="tip"><span class="tip-num">3</span><span class="tip-text"><strong>Mention body placement</strong> — Affects composition, flow, and how the design wraps.</span></div>
+    <div class="tip"><span class="tip-num">4</span><span class="tip-text"><strong>Add "tattoo stencil ready"</strong> — Forces cleaner, more transferable output.</span></div>
+    <div class="tip"><span class="tip-num">5</span><span class="tip-text"><strong>Iterate, don't settle</strong> — Generate 5-10 versions and cherry-pick the best elements.</span></div>
+    <div class="tip"><span class="tip-num">6</span><span class="tip-text"><strong>Consult a real tattoo artist</strong> — AI designs are starting points. A pro adapts for skin, aging, and anatomy.</span></div>
+  </div>
+
+  <h2>Quick Reference — Style Picker</h2>
+  <p style="color:var(--text-muted);margin-bottom:1rem;">Not sure which style fits your photo? Use this table.</p>
+
+  <table class="picker-table">
+    <thead>
+      <tr><th>Your Photo Subject</th><th>Recommended Styles</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Portrait / Face</td><td>Black & Grey Realism, Chicano, Micro-Realism, Surrealist</td></tr>
+      <tr><td>Pet / Animal</td><td>Neo-Traditional, Geometric, Fine Line, Sketch</td></tr>
+      <tr><td>Flower / Plant</td><td>Watercolor, Fine Line, Japanese, American Traditional</td></tr>
+      <tr><td>Landscape / Scene</td><td>Surrealist, Dotwork, Black & Grey Realism</td></tr>
+      <tr><td>Object / Symbol</td><td>Geometric, Blackwork, American Traditional, Trash Polka</td></tr>
+      <tr><td>Full Sleeve Concept</td><td>Japanese, Polynesian, Ornamental Blackwork, Neo-Traditional</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════ SCRIPTS ══════════════ -->
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  function toggleCard(header) {
+    header.closest('.style-card').classList.toggle('open');
+  }
+
+  function copyPrompt(btn) {
+    const container = btn.closest('.prompt-box') || btn.closest('.pre-wrap');
+    const pre = container.querySelector('pre');
+    const text = pre.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  // Register Service Worker for PWA / offline support
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
+</body>
+</html>
