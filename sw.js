@@ -1,9 +1,8 @@
 const CACHE_NAME = 'tattoo-prompts-v1';
 const ASSETS = [
-  'photo_to_tattoo_prompts.html',
-  'manifest.json',
-  'icon-192.png',
-  'icon-512.png'
+  './',
+  'index.html',
+  'manifest.json'
 ];
 
 self.addEventListener('install', e => {

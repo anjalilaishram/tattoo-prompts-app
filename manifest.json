@@ -2,7 +2,7 @@
   "name": "Photo to Tattoo Art — AI Prompt Guide",
   "short_name": "Tattoo Prompts",
   "description": "Convert real photos into tattoo art using AI prompts",
-  "start_url": "photo_to_tattoo_prompts.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0e0e0e",
   "theme_color": "#0e0e0e",
